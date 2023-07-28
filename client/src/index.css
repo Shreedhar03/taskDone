@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Poppins&family=Sarala&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:root {
+    --bg-primary: #181717;
+    --bg-secondary: #212123;
+    --primary: #FFCB74;
+    --text: #fff;
+}
+
+* {
+    font-family: 'Poppins';
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.abel {
+    font-family: 'Abel';
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text);
+}
+
+body.dark {
+    --bg-primary: #181717;
+    --bg-secondary: #212123;
+    --primary: #FFCB74;
+    --text: #fff;
+}
