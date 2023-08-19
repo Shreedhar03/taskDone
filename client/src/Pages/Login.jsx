@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button, Input } from "@material-tailwind/react";
 import login from '../assets/login.svg'
@@ -19,32 +19,29 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            // let { data } = await axios.post("http://localhost:5000/login", credentials)
-            // if (data.success) {
-            //     console.log(data)
-            //     fetchData()
-            //     move('/dashboard')
-            // }
-            // notify(data.message)
-            const res = await fetch("http://localhost:5000/login", {
-                method: "POST",
-                headers: {
-                    "Content-type": "application/json"
-                },
-                body:JSON.stringify({
-                    username:credentials.username,
-                    password:credentials.password
-                })
-            })
-
-            const json = await res.json()
-            console.log("json",json)
-            notify(json.message)
+            let { data } = await axios.post("http://localhost:5000/login", credentials)
+            if (data.success) {
+                console.log(data)
+                fetchData()
+                move('/dashboard')
+            }
+            notify(data.message)
+  
         }
         catch (err) {
             console.log("err", err)
         }
     }
+    const handleSubmit2=async(e)=>{
+        console.log("done")
+        e.preventDefault()
+        let {data} = await axios.get('http://localhost:5000/info');
+
+        console.log(data.message)
+    }
+    useEffect(()=>{
+        console.log(document.cookie)
+    },[])
     return (
         <div className="flex max-w-5xl mx-auto justify-center items-start mt-24 bg-green-0">
 
@@ -58,7 +55,7 @@ const Login = () => {
                     <p className='text-[var(--primary)] text-3xl abel'>taskDone</p>
                 </div>
                 <h2 className="text-[var(--text)] text-center text-xl">Login to your Account</h2>
-                <form className="mt-8 mb-2" onSubmit={handleSubmit}>
+                <form className="mt-8 mb-2" onSubmit={handleSubmit2}>
                     <div className="mb-4 flex flex-col gap-6 w-full">
                         <Input value={credentials.username} name="username" onChange={handleChange} autoComplete="off" required size="lg" label="Username" color="white" />
                         <Input value={credentials.password} name="password" onChange={handleChange} autoComplete="off" required type="password" size="lg" label="Password" color="white" />
