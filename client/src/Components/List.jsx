@@ -13,8 +13,8 @@ const Lists = (props) => {
         <div className="flex items-center w-full justify-between">
             {
                 editBox ?
-                    <div className="ml-2">
-                        <Input label="Edit task" color="gray" style={{ width: "270px", color: "white" }} />
+                    <div className="ml-3">
+                        <Input label="Edit task" color="gray" style={{ width: "230px", color: "white" }} />
                     </div>
                     :
                     <div className="flex items-center">

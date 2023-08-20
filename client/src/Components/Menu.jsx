@@ -21,7 +21,7 @@ import axios from "axios";
 
 const Menu = () => {
   const navigate=useNavigate()
-  const { openRight, closeDrawerRight,handleOpenDialog ,notify} = useContext(AppContext)
+  const { openRight, closeDrawerRight,handleOpenDialog ,notify,userData} = useContext(AppContext)
   const logout = async ()=>{
     let {data} = await axios.post(`http://localhost:5000/api/logout`)
     notify(data.message)
@@ -43,7 +43,7 @@ const Menu = () => {
             <ListItemPrefix>
             <p className='text-xl py-1 px-3 bg-teal-500 text-black rounded-full'>S</p>
             </ListItemPrefix>
-            <p className='text-lg text-[var(--text)]'>Shreedhar Urawane</p>
+            <p className='text-lg text-[var(--text)]'>{userData?.email}</p>
           </ListItem>
           <ListItem className="text-[var(--text)] mt-8" onClick={()=>{handleOpenDialog();closeDrawerRight()}}>
             <ListItemPrefix>
@@ -64,7 +64,7 @@ const Menu = () => {
             </ListItemPrefix>
             Light Mode
           </ListItem>
-          <ListItem className="text-[var(--text)]" onClick={()=>{navigate('/profile');closeDrawerRight()}}>
+          <ListItem className="text-[var(--text)]" disabled={true} onClick={()=>{navigate('/profile');closeDrawerRight()}}>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>

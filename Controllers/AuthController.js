@@ -71,4 +71,13 @@ const addTask = async(req,res)=>{
     await user.save()
     res.json({collection,user})
 }
-module.exports = { signUp, login, logout, user_data,newCollection,addTask }
+const dropCollection = async(req,res)=>{
+    let {email,name} = req.body
+    let user = await userModel.findOne({email})
+    let newCollection = user.collections.filter(e=>e.title!==name)
+    user.collections = newCollection
+    await user.save()
+    res.json({collection:user.collections})
+    
+}
+module.exports = { signUp, login, logout, user_data,newCollection,addTask,dropCollection }

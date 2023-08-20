@@ -6,39 +6,46 @@ import {
 } from "@material-tailwind/react";
 import { AppContext } from "../App";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const DialogBox = () => {
-    const { handleOpenDialog, openDialog,notify,email } = useContext(AppContext)
-    const [title,setTitle] = useState('')
-    const handleChange=(e)=>{
+    const navigate=useNavigate()
+    const { handleOpenDialog, openDialog, fetchData, email } = useContext(AppContext)
+    const [title, setTitle] = useState('')
+    const handleChange = (e) => {
         setTitle(e.target.value)
     }
-    const handleSubmit = async()=>{
-        console.log("email",email)
-        let {data}=axios.post(`http://localhost:5000/api/newCollection`,{
-            title,email
+    const handleSubmit = async (e) => {
+        console.log("submitted")
+        e.preventDefault()
+        console.log("email", email)
+        let { data } = axios.post(`http://localhost:5000/api/newCollection`, {
+            title, email
         })
         console.log(data)
+        navigate('/dashboard')
         handleOpenDialog()
     }
     return (
         <Fragment>
-            
+
             <Dialog open={openDialog} size="xs" handler={handleOpenDialog} className="bg-[var(--bg-secondary)]">
-                <h1 className="text-[var(--text)] pt-6 pb-3 text-xl text-center">New Collection</h1>
-                <DialogBody>
-                    <div className="max-w-[300px] mx-auto flex justify-center">
-                        <Input type="text" name='title' value={title} onChange={handleChange} color="white" label="Enter name of your collection" />
+                <form onSubmit={handleSubmit}>
+                    <h1 className="text-[var(--text)] pt-6 pb-3 text-xl text-center">New Collection</h1>
+                    <DialogBody>
+                        <div className="max-w-[300px] mx-auto flex justify-center">
+                            <Input type="text" name='title' value={title} onChange={handleChange} color="white" label="Enter name of your collection" />
+                        </div>
+                    </DialogBody>
+                    <div className="flex justify-center max-w-[300px] mx-auto pb-6 gap-2">
+                        <button className="px-3 py-1 w-1/2 border border-[var(--primary)] text-[var(--primary)] rounded-lg" onClick={handleOpenDialog}>
+                            <span>Cancel</span>
+                        </button>
+                        <input type="submit" className="px-3 py-1 w-1/2 bg-[var(--primary)] text-black rounded-lg" value={'Confirm'}>
+                            {/* <span>Confirm</span> */}
+                        </input>
                     </div>
-                </DialogBody>
-                <div className="flex justify-center w-full py-6 gap-3">
-                    <button className="px-3 py-1 w-full ml-10 border border-[var(--primary)] text-[var(--primary)] rounded-lg" onClick={handleOpenDialog}>
-                        <span>Cancel</span>
-                    </button>
-                    <button className="px-3 py-1 w-full mr-10 bg-[var(--primary)] text-black rounded-lg" onClick={handleSubmit}>
-                        <span>Confirm</span>
-                    </button>
-                </div>
+                </form>
             </Dialog>
         </Fragment>
     );

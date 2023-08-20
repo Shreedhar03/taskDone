@@ -26,8 +26,8 @@ function App() {
   const fetchData = async () => {
     try {
       let { data } = await axios.get('http://localhost:5000/api/dashboard')
-      setUserData(data.userData)
-      setEmail(data.user.email)
+      setUserData(data?.userData)
+      setEmail(data?.user?.email)
       console.log("email - app.jsx",email)
       if(!data.success)
         goto('/')
