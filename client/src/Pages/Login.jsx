@@ -10,7 +10,7 @@ const Login = () => {
     const { notify, fetchData } = useContext(AppContext)
     const move = useNavigate()
     const [credentials, setCredentials] = useState({
-        username: "",
+        email: "",
         password: ""
     })
     const handleChange = (e) => {
@@ -19,7 +19,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            let { data } = await axios.post("http://localhost:5000/login", credentials)
+            let { data } = await axios.post("http://localhost:5000/api/login", credentials)
             if (data.success) {
                 console.log(data)
                 fetchData()
@@ -32,16 +32,7 @@ const Login = () => {
             console.log("err", err)
         }
     }
-    const handleSubmit2=async(e)=>{
-        console.log("done")
-        e.preventDefault()
-        let {data} = await axios.get('http://localhost:5000/info');
 
-        console.log(data.message)
-    }
-    useEffect(()=>{
-        console.log(document.cookie)
-    },[])
     return (
         <div className="flex max-w-5xl mx-auto justify-center items-start mt-24 bg-green-0">
 
@@ -55,9 +46,9 @@ const Login = () => {
                     <p className='text-[var(--primary)] text-3xl abel'>taskDone</p>
                 </div>
                 <h2 className="text-[var(--text)] text-center text-xl">Login to your Account</h2>
-                <form className="mt-8 mb-2" onSubmit={handleSubmit2}>
+                <form className="mt-8 mb-2" onSubmit={handleSubmit}>
                     <div className="mb-4 flex flex-col gap-6 w-full">
-                        <Input value={credentials.username} name="username" onChange={handleChange} autoComplete="off" required size="lg" label="Username" color="white" />
+                        <Input value={credentials.email} name="email" onChange={handleChange} autoComplete="off" required type="email" size="lg" label="Email" color="white" />
                         <Input value={credentials.password} name="password" onChange={handleChange} autoComplete="off" required type="password" size="lg" label="Password" color="white" />
                         <Button style={{ boxShadow: "none", background: "var(--primary)", color: "black" }} type="submit" label="Submit">Submit</Button>
                     </div>

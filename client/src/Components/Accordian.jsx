@@ -37,8 +37,11 @@ const Accordian = (props) => {
                     <p className="font-light">{props.title}</p>
                 </AccordionHeader>
                 <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col px-6">
-                   <List id="1" value="Item 1"/>
-                   <List id="2" value="Item 2"/>
+                   {
+                    props.tasks?.map((t,key)=>{
+                        return <List id={key} value={t.title}/>
+                    })
+                   }
                    <button className="py-1 text-gray-400" onClick={()=>navigate('/collection/work')}>Open Collection</button>
                 </AccordionBody>
             </Accordion>

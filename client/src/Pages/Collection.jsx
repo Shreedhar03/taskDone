@@ -1,12 +1,17 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import Navbar from '../Components/Navbar'
 import item from '../assets/item.svg'
 import { Input } from '@material-tailwind/react'
 import { CalendarDaysIcon } from "@heroicons/react/24/solid";
 import Lists from '../Components/List';
 import { Chart } from '../Components/Chart';
+import { AppContext } from '../App';
 
 const Collection = () => {
+    const { fetchData } = useContext(AppContext)
+    useEffect(()=>{
+        fetchData()
+    },[])
     return (
         <>
             <Navbar />
@@ -16,7 +21,7 @@ const Collection = () => {
                     <p className='text-2xl'>Health</p>
                 </div>
                 <form className='w-72 relative'>
-                    <Input variant='text' color='white' label='Add task' />
+                    <Input variant='outlined' color='white' label='Add task'/>
                     <input type="submit" value={"+"} className='absolute top-1 right-3 text-3xl font-extralight abel' />
                     <button className='flex items-center gap-2 mt-3 cursor-pointer opacity-40' type='button'>
                         <CalendarDaysIcon className='w-5' /><span className='text-sm'>Set date and time</span>

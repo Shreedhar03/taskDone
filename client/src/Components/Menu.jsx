@@ -17,11 +17,16 @@ import {
 } from "@heroicons/react/24/solid";
 import { AppContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Menu = () => {
   const navigate=useNavigate()
-  const { openRight, closeDrawerRight,handleOpenDialog } = useContext(AppContext)
-
+  const { openRight, closeDrawerRight,handleOpenDialog ,notify} = useContext(AppContext)
+  const logout = async ()=>{
+    let {data} = await axios.post(`http://localhost:5000/api/logout`)
+    notify(data.message)
+    navigate('/')
+  }
   return (
     <React.Fragment>
       <Drawer open={openRight} onClose={closeDrawerRight} placement="right" className="bg-[var(--bg-secondary)]">
@@ -66,7 +71,7 @@ const Menu = () => {
             Profile
           </ListItem>
 
-          <ListItem className="text-[var(--text)]">
+          <ListItem className="text-[var(--text)]" onClick={()=>{logout();closeDrawerRight()}}>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
 import Welcome from './Pages/Welcome'
 import Login from './Pages/Login'
 import Register from './Pages/Register'
@@ -14,7 +14,10 @@ import axios from 'axios'
 export const AppContext = createContext()
 
 function App() {
+  const [email,setEmail]=useState('');
+  const [userData,setUserData]=useState();
   const notify = (msg) => toast(msg);
+  const goto = useNavigate()
   const [openRight, setOpenRight] = useState(false);
   const openDrawerRight = () => setOpenRight(true);
   const closeDrawerRight = () => setOpenRight(false);
@@ -22,10 +25,12 @@ function App() {
   const handleOpenDialog = () => setOpenDialog(!openDialog);
   const fetchData = async () => {
     try {
-      let token
-      const headers = { Authorization: `Bearer ${token}` }
-      let { data } = await axios.get('http://localhost:5000/dashboard', { headers })
-      console.log("user data : ", data)
+      let { data } = await axios.get('http://localhost:5000/api/dashboard')
+      setUserData(data.userData)
+      setEmail(data.user.email)
+      console.log("email - app.jsx",email)
+      if(!data.success)
+        goto('/')
     }
     catch (err) {
       console.log(err)
@@ -38,9 +43,7 @@ function App() {
 
   return (
     <>
-      <AppContext.Provider value={{ fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
-        <BrowserRouter>
-
+      <AppContext.Provider value={{userData, email,fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
           <Menu />
           <Dialog />
           <Routes>
@@ -52,8 +55,6 @@ function App() {
             {/* <Route path='/profile' element={<Profile />}></Route> */}
           </Routes>
           <ToastContainer autoClose={1500} theme='dark' position='top-center' />
-        </BrowserRouter>
-
       </AppContext.Provider>
     </>
   )

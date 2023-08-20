@@ -1,7 +1,5 @@
 const userModel = require('../Models/userModel')
-const generateToken = require('../util/secretToken')
-const bcrypt = require('bcrypt')
-const { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, onAuthStateChanged,signOut } = require('firebase/auth')
+const { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, onAuthStateChanged, signOut } = require('firebase/auth')
 const { initializeApp } = require('firebase/app')
 
 const firebaseConfig = {
@@ -22,7 +20,11 @@ const signUp = async (req, res) => {
     try {
         let user = await createUserWithEmailAndPassword(auth, email, password)
         await sendEmailVerification(auth.currentUser)
-        res.json({ meaasge: "Account Created. Please verify your email", user })
+        let newUser = new userModel({
+            email
+        })
+        await newUser.save()
+        res.json({ success: true, message: "Account Created. Please verify your email", user,newUser })
     } catch (err) {
         res.json({ success: false, message: err.message })
     }
@@ -31,28 +33,42 @@ const login = async (req, res) => {
     const { email, password } = req.body
     try {
         let user = await signInWithEmailAndPassword(auth, email, password)
-        res.json({ verified: user.user.emailVerified,message:"loggedIn" })
+        if (!user.user.emailVerified)
+            return res.json({ success: false, message: `Please verify your email` })
+        res.json({ success: true, message: `LoggedIn as ${user.user.email}` })
     }
     catch (err) {
-        res.json({ success: false, errmessage: err.message })
+        res.json({ success: false, message: err.message })
     }
 }
 const logout = async (req, res) => {
     try {
         await signOut(auth)
-        res.json({ message:"loggedOut" })
+        res.json({ message: "loggedOut" })
     }
     catch (err) {
         res.json({ success: false, errmessage: err.message })
     }
 }
 const user_data = async (req, res) => {
-    onAuthStateChanged(auth, user => {
-        if (user) {
-            res.json({ user: user.email })
-        } else {
-            res.json({ message: 'Not logged In' })
-        }
-    })
+    const user = auth.currentUser
+    let userData = await userModel.findOne({email:user?.email})
+    return user ? res.json({ success: true, message: "User is signed in",user,userData }) : res.json({ success: false, message: "not signed in" })
 }
-module.exports = { signUp, login, logout, user_data }
+const newCollection = async(req,res)=>{
+    let {email,title} = req.body
+    let user = await userModel.findOne({email})
+    user.collections.push({title,tasks:[]})
+    await user.save()
+    res.json({user})
+}
+const addTask = async(req,res)=>{
+    let {email,collectionName,taskTitle} = req.body
+    let user = await userModel.findOne({email})
+    let collection = user.collections.find(c=>c.title===collectionName)
+    collection.tasks.push({title:taskTitle})
+    console.log('collection',collection.tasks)
+    await user.save()
+    res.json({collection,user})
+}
+module.exports = { signUp, login, logout, user_data,newCollection,addTask }
