@@ -11,9 +11,10 @@ import axios from 'axios';
 
 const Collection = () => {
     const [task,setTask] = useState('')
-    const { fetchData, userData } = useContext(AppContext)
+    const { checkLoggedIn,fetchData, userData } = useContext(AppContext)
     const { id } = useParams()
     useEffect(() => {
+        checkLoggedIn()
         fetchData()
     }, [])
     const handleChange = (e)=>{
@@ -48,11 +49,11 @@ const Collection = () => {
                 <div className='w-[300px] sm:w-[350px] mt-12'>
                     {
                         userData?.collections?.filter(e => e.title === id)[0]?.tasks?.map((t, key) => {
-                            return <Lists id={key} key={key} value={t.title} />
+                            return <Lists id={key} value={t.title} collection={id} />
                         })
                     }
                 </div>
-                <div className='w-60 sm:w-80'>
+                <div className='w-60 sm:w-80 self-center'>
                     <Chart />
                 </div>
             </div>

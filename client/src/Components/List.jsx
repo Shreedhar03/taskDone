@@ -1,13 +1,23 @@
 import { Checkbox, Input, } from "@material-tailwind/react";
 import { TrashIcon, PencilSquareIcon,CheckIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import cross from '../assets/cross.svg'
 import correct from '../assets/correct.svg'
+import axios from "axios";
+import { AppContext } from "../App";
 
 const Lists = (props) => {
+    const {fetchData,userData}=useContext(AppContext)
     const [editBox, setEditBox] = useState(false)
     const handleEditBox = () => {
         setEditBox(!editBox)
+    }
+    const handleDelete = async()=>{
+        let {data} = await axios.put(`http://localhost:5000/api/deleteTask`,{
+            collection:props.collection,taskTitle:props.value,email:userData.email
+        })
+        console.log(data)
+        fetchData()
     }
     return (
         <div className="flex items-center w-full justify-between">
@@ -28,7 +38,7 @@ const Lists = (props) => {
                     editBox ? <img src={correct} alt="correct" className="w-6 h-6" onClick={handleEditBox}/> : <PencilSquareIcon className="w-5 h-5" onClick={handleEditBox} />
                 }
                 {
-                   editBox ? <img src={cross} alt="cross" className="w-6 h-6"  onClick={handleEditBox}/> : <TrashIcon className="w-5 h-5" />
+                   editBox ? <img src={cross} alt="cross" className="w-6 h-6"  onClick={handleEditBox}/> : <TrashIcon className="w-5 h-5" onClick={handleDelete}/>
                 }
             </div>
         </div>

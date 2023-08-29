@@ -7,13 +7,14 @@ import { AppContext } from "../App";
 import axios from "axios";
 
 const Login = () => {
-    const { notify, fetchData } = useContext(AppContext)
+    const { notify, fetchData,setEmail } = useContext(AppContext)
     const move = useNavigate()
     const [credentials, setCredentials] = useState({
         email: "",
         password: ""
     })
     const handleChange = (e) => {
+        setEmail(e.target.value)
         setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
     const handleSubmit = async (e) => {

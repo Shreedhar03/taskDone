@@ -42,15 +42,16 @@ const Accordian = (props) => {
         fetchData()
     }
     return (
+        <div className='shrink-0'>
         <Fragment>
-            <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
+            <Accordion open={open === 1} icon={<Icon id={1} open={open}/>}>
                 <AccordionHeader onClick={() => handleOpen(1)} className="text-[var(--text)] hover:text-white text-lg bg-[var(--bg-secondary)] px-6">
                     <p className="font-light">{props.title}</p>
                 </AccordionHeader>
                 <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col pr-6 pl-2">
                     {
                         props.tasks?.map((t, key) => {
-                            return <List id={key} value={t.title} />
+                            return <List id={key} value={t.title} collection={props.title}/>
                         })
                     }
                     <div className="flex items-center gap-4 justify-end mt-4">
@@ -58,12 +59,13 @@ const Accordian = (props) => {
                             <TrashIcon className="w-4" />
                         </button>
                         <button className="py-1 text-gray-400 flex gap-2 items-center" onClick={() => navigate(`/collection/${props.title}`)}>Open Collection
-                            < ArrowsPointingOutIcon className="w-4" />
+                            <ArrowsPointingOutIcon className="w-4" />
                         </button>
                     </div>
                 </AccordionBody>
             </Accordion>
         </Fragment>
+        </div>
     );
 }
 

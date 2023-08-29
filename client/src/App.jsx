@@ -23,14 +23,21 @@ function App() {
   const closeDrawerRight = () => setOpenRight(false);
   const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => setOpenDialog(!openDialog);
+  const checkLoggedIn = async()=>{
+    let {data} = await axios.get(`http://localhost:5000/api/checkLoggedIn`)
+    console.log(data)
+  }
   const fetchData = async () => {
     try {
-      let { data } = await axios.get('http://localhost:5000/api/dashboard')
+      let { data } = await axios.post('http://localhost:5000/api/dashboard',{email:"urawane03@gmail.com"})
       setUserData(data?.userData)
-      setEmail(data?.user?.email)
+      setEmail(data?.userData?.email)
+      console.log("data",data)
       console.log("email - app.jsx",email)
-      if(!data.success)
+      if(!data.success){
         goto('/')
+        console.log("logged out")
+      }
     }
     catch (err) {
       console.log(err)
@@ -38,12 +45,12 @@ function App() {
   }
   useEffect(() => {
     console.log("useeffect of app.jsx")
-    fetchData();
+    checkLoggedIn()
   }, [])
 
   return (
     <>
-      <AppContext.Provider value={{userData, email,fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
+      <AppContext.Provider value={{checkLoggedIn,userData, email,setEmail,fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
           <Menu />
           <Dialog />
           <Routes>
