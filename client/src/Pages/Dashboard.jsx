@@ -11,12 +11,12 @@ const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Dashboard = () => {
     const [date, setDate] = useState(new Date())
-    const { fetchData, userData, checkLoggedIn } = useContext(AppContext)
+    const { fetchData, userData,checkAuthState } = useContext(AppContext)
 
     useEffect(() => {
         setDate(new Date())
-        checkLoggedIn()
         fetchData()
+        checkAuthState()
         console.log("dashboarddddd")
         console.log('userData', userData)
     }, [])

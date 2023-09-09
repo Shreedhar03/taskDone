@@ -21,9 +21,10 @@ import axios from "axios";
 
 const Menu = () => {
   const navigate=useNavigate()
-  const { openRight, closeDrawerRight,handleOpenDialog ,notify,userData} = useContext(AppContext)
+  const { openRight, closeDrawerRight,handleOpenDialog ,notify,userData,signOutWithGoogle} = useContext(AppContext)
   const logout = async ()=>{
-    let {data} = await axios.post(`http://localhost:5000/api/logout`)
+    // let {data} = await axios.post(`http://localhost:5000/api/logout`)
+    signOutWithGoogle()
     notify(data.message)
     navigate('/')
   }

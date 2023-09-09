@@ -19,12 +19,13 @@ const DialogBox = () => {
         console.log("submitted")
         e.preventDefault()
         console.log("email", email)
-        let { data } = axios.post(`http://localhost:5000/api/newCollection`, {
+        let { data } = await axios.post(`http://localhost:5000/api/newCollection`, {
             title, email
         })
-        console.log(data)
-        navigate('/dashboard')
+        // console.log(data)
+        fetchData()
         handleOpenDialog()
+        navigate('/dashboard')
     }
     return (
         <Fragment>

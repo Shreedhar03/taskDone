@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import logo from '../assets/logo.svg'
+import google from '../assets/google.svg'
 import welcome from '../assets/welcome.svg'
+import { AppContext } from '../App'
 
 const Welcome = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
+    const {signInWithGoogle,checkAuthState} = useContext(AppContext)
+
+    useEffect(()=>{
+        checkAuthState()
+    },[])
     return (
         <>
             <div className='bg-green-20 max-w-6xl mx-auto my-24'>
@@ -18,8 +25,13 @@ const Welcome = () => {
                         <p className='text-4xl'>Ready to take control of your tasks?</p>
                         <p className='text-xl'>Unlock your full potential with our sleek and efficient todo web application.</p>
                         <div className='flex flex-col md:flex-row gap-3'>
-                            <button className='border border-[var(--primary)] rounded-lg text-[var(--primary)] px-4 py-2' onClick={()=>navigate('/register')}>Sign up</button>
-                            <button className='bg-[var(--primary)] text-black rounded-lg px-4 py-2' onClick={()=>navigate('/login')}>Login</button>
+                            {/* <button className='border border-[var(--primary)] rounded-lg text-[var(--primary)] px-4 py-2' onClick={() => navigate('/register')}>Sign up</button> */}
+                            {/* <button className='bg-[var(--primary)] text-black rounded-lg px-4 py-2' onClick={() => navigate('/login')}>Login</button> */}
+                            <button className='flex self-start gap-2 bg-blue-gray-900 px-6 py-3 rounded-xl'
+                                onClick={signInWithGoogle}>
+                                <img src={google} alt={'google'} />
+                                <p>Continue with google</p>
+                            </button>
                         </div>
                     </div>
                     <img src={welcome} alt="welcome" className='w-1/2 h-auto hidden md:block' />

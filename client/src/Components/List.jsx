@@ -13,6 +13,7 @@ const Lists = (props) => {
         setEditBox(!editBox)
     }
     const handleDelete = async()=>{
+        console.log("delete item")
         let {data} = await axios.put(`http://localhost:5000/api/deleteTask`,{
             collection:props.collection,taskTitle:props.value,email:userData.email
         })
