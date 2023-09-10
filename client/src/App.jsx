@@ -31,7 +31,7 @@ const provider = new GoogleAuthProvider()
 export const AppContext = createContext()
 
 function App() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(''); // use localstorage
   const [userData, setUserData] = useState();
   const notify = (msg) => toast(msg);
   const goto = useNavigate()
@@ -40,23 +40,29 @@ function App() {
   const closeDrawerRight = () => setOpenRight(false);
   const [openDialog, setOpenDialog] = useState(false);
   const handleOpenDialog = () => setOpenDialog(!openDialog);
-  let userMail;
-  
-  const fetchData = async () => {
-    try {
-      // alert(userMail)
-      let { data } = await axios.post('http://localhost:5000/api/dashboard', { email: null })
-      setUserData(data?.userData)
-      setEmail(data?.userData?.email)
-      console.log("data", data)
-    }
-    catch (err) {
-      console.log(err)
-    }
+
+  const fetchData = () => {
+    let userMail;
+    onAuthStateChanged(auth, async user => {
+      if (user) {
+        userMail = user.email
+        try {
+          let { data } = await axios.post('http://localhost:5000/api/dashboard', { email: userMail })
+          setUserData(data?.userData)
+          console.log("data", data.userData)
+        }
+        catch (err) {
+          console.log(err)
+        }
+      }
+    })
   }
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
-      .then((result) => {
+      .then(async (result) => {
+        setEmail(result.user.email)
+        let { data } = await axios.post('http://localhost:5000/api/createUser', { email: result.user.email })
+        console.log('------------------------------', data)
         goto('/dashboard')
       })
       .catch((err) => {
@@ -80,19 +86,20 @@ function App() {
   }
   const checkAuthState = () => {
     onAuthStateChanged(auth, (user) => {
-      console.log('user', user)
-      userMail = user?.email
+      setEmail(user?.email)
+      user && fetchData()
+      console.log('user', user?.email)
       user ? goto('/dashboard') : goto('/')
     })
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     checkAuthState()
-  },[])
+  }, [])
 
   return (
     <>
-      <AppContext.Provider value={{ checkAuthState, userMail, signInWithGoogle, signOutWithGoogle, userData, email, setEmail, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
+      <AppContext.Provider value={{ checkAuthState, signInWithGoogle, signOutWithGoogle, userData, email, setEmail, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
         <Menu />
         <Dialog />
         <Routes>

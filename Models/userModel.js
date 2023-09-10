@@ -8,7 +8,7 @@ const task = new mongoose.Schema({
 
 const userSchema = new mongoose.Schema({
     email: {
-        type: String,
+        type: String,default:""
     },
     collections : {type:[{title:String,tasks:[task]}]}
 

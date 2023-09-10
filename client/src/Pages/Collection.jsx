@@ -10,20 +10,29 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
 const Collection = () => {
-    const [task,setTask] = useState('')
-    const { checkLoggedIn,fetchData, userData } = useContext(AppContext)
+    const [task, setTask] = useState('')
+    const { fetchData, userData } = useContext(AppContext)
+    const [completed, setCompleted] = useState()
+    const [pending, setPending] = useState()
     const { id } = useParams()
+    const calcAnalytics = () => {
+        console.log("analysis")
+        setCompleted(userData?.collections?.filter(e => e.title === id)[0]?.tasks.filter(e => e.completed === true).length)
+        setPending(userData?.collections?.filter(e => e.title === id)[0]?.tasks.filter(e => e.completed === false).length)
+    }
     useEffect(() => {
-        checkLoggedIn()
         fetchData()
     }, [])
-    const handleChange = (e)=>{
+    useEffect(() => {
+        calcAnalytics()
+    }, [userData])
+    const handleChange = (e) => {
         setTask(e.target.value)
     }
     const handleAddTask = async (e) => {
         e.preventDefault()
-        let {data} = await axios.post(`http://localhost:5000/api/addTask`,{
-            collectionName:id,taskTitle:task,email:userData.email
+        let { data } = await axios.post(`http://localhost:5000/api/addTask`, {
+            collectionName: id, taskTitle: task, email: userData.email
         })
         console.log(data)
         setTask('')
@@ -39,7 +48,7 @@ const Collection = () => {
                 </div>
                 <form className='w-72 relative' onSubmit={handleAddTask}>
                     <Input variant='outlined' value={task} onChange={handleChange} color='white' label='Add task' />
-                    <input type="submit" value={"+"} className='absolute top-1 right-3 text-3xl font-extralight abel' />
+                    <input type="submit" value={"+"} className='absolute top-[2px] right-3 text-3xl font-extralight abel' />
                     <button className='flex items-center gap-2 mt-3 cursor-pointer opacity-40' type='button'>
                         <CalendarDaysIcon className='w-5' /><span className='text-sm'>Set date and time</span>
                     </button>
@@ -49,12 +58,13 @@ const Collection = () => {
                 <div className='w-[300px] sm:w-[350px] mt-12'>
                     {
                         userData?.collections?.filter(e => e.title === id)[0]?.tasks?.map((t, key) => {
-                            return <Lists id={key} value={t.title} collection={id} />
+                            return <Lists calcAnalytics={calcAnalytics} id={key} value={t.title} collection={id} done={t.completed} />
                         })
                     }
                 </div>
+
                 <div className='w-60 sm:w-80 self-center'>
-                    <Chart />
+                    <Chart pending={pending} completed={completed} />
                 </div>
             </div>
         </>

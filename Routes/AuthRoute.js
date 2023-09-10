@@ -1,4 +1,4 @@
-const {signUp,login,user_data,logout,checkLoggedIn,newCollection,addTask,dropCollection,deleteTask} = require('../Controllers/AuthController')
+const {user_data,newCollection,addTask,dropCollection,deleteTask,createUser, markDone, editTask} = require('../Controllers/AuthController')
 // const userVerification=require('../Middlewares/AuthMiddleware')
 const router= require('express').Router()
 
@@ -10,6 +10,9 @@ router.post('/dashboard',user_data)
 router.post('/newCollection',newCollection)
 router.post('/addTask',addTask)
 router.put('/dropCollection',dropCollection)
-router.put('/deleteTask',deleteTask)
+router.post('/deleteTask',deleteTask)
+router.post('/createUser',createUser)
+router.post('/markDone',markDone)
+router.post('/editTask',editTask)
 
 module.exports=router

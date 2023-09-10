@@ -11,12 +11,12 @@ const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Dashboard = () => {
     const [date, setDate] = useState(new Date())
-    const { fetchData, userData,checkAuthState } = useContext(AppContext)
+    const { userData, checkAuthState, fetchData } = useContext(AppContext)
 
     useEffect(() => {
         setDate(new Date())
-        fetchData()
         checkAuthState()
+        fetchData()
         console.log("dashboarddddd")
         console.log('userData', userData)
     }, [])
@@ -38,6 +38,12 @@ const Dashboard = () => {
                                         <Accordian title={c.title} key={key} tasks={c.tasks} />
                                     )
                                 })
+                            }
+                        </div>
+
+                        <div>
+                            {
+                                userData?.collections?.length === 0 && <p className='text-xl mt-4 ml-2'>No collections</p>
                             }
                         </div>
 

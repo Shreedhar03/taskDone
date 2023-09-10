@@ -20,12 +20,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Menu = () => {
-  const navigate=useNavigate()
-  const { openRight, closeDrawerRight,handleOpenDialog ,notify,userData,signOutWithGoogle} = useContext(AppContext)
-  const logout = async ()=>{
+  const navigate = useNavigate()
+  const { openRight, closeDrawerRight, handleOpenDialog, notify, email, signOutWithGoogle } = useContext(AppContext)
+  const logout = async () => {
     // let {data} = await axios.post(`http://localhost:5000/api/logout`)
     signOutWithGoogle()
-    notify(data.message)
+    notify("Logged Out")
     navigate('/')
   }
   return (
@@ -39,20 +39,23 @@ const Menu = () => {
             <XMarkIcon strokeWidth={2} className="h-6 w-6" />
           </IconButton>
         </div>
+
         <List>
           <ListItem className="text-[var(--text)] hover:bg-[var(--bg-secondary)]">
             <ListItemPrefix>
-            <p className='text-xl py-1 px-3 bg-teal-500 text-black rounded-full'>S</p>
+              <p className='text-xl py-1 px-3 bg-teal-500 text-black rounded-full'>S</p>
             </ListItemPrefix>
-            <p className='text-lg text-[var(--text)]'>{userData?.email}</p>
+            <p className='text-lg text-[var(--text)] break-all'>{email && email}</p>
           </ListItem>
-          <ListItem className="text-[var(--text)] mt-8" onClick={()=>{handleOpenDialog();closeDrawerRight()}}>
+
+          <ListItem className="text-[var(--text)] mt-8" onClick={() => { handleOpenDialog(); closeDrawerRight() }}>
             <ListItemPrefix>
               <PlusIcon className="h-5 w-5" />
             </ListItemPrefix>
             New Collection
           </ListItem>
-          <ListItem className="text-[var(--text)]" onClick={()=>{navigate('/dashboard');closeDrawerRight()}}>
+
+          <ListItem className="text-[var(--text)]" onClick={() => { navigate('/dashboard'); closeDrawerRight() }}>
             <ListItemPrefix>
               <PresentationChartBarIcon className="h-5 w-5" />
             </ListItemPrefix>
@@ -65,20 +68,22 @@ const Menu = () => {
             </ListItemPrefix>
             Light Mode
           </ListItem>
-          <ListItem className="text-[var(--text)]" disabled={true} onClick={()=>{navigate('/profile');closeDrawerRight()}}>
+
+          <ListItem className="text-[var(--text)]" disabled={true} onClick={() => { navigate('/profile'); closeDrawerRight() }}>
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
             Profile
           </ListItem>
 
-          <ListItem className="text-[var(--text)]" onClick={()=>{logout();closeDrawerRight()}}>
+          <ListItem className="text-[var(--text)]" onClick={() => { logout(); closeDrawerRight() }}>
             <ListItemPrefix>
               <PowerIcon className="h-5 w-5" />
             </ListItemPrefix>
             Log Out
           </ListItem>
         </List>
+
       </Drawer>
     </React.Fragment>
   );

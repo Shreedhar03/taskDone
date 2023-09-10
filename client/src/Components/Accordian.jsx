@@ -51,7 +51,7 @@ const Accordian = (props) => {
                     <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col pr-6 pl-2">
                         {
                             props.tasks?.map((t, key) => {
-                                return <List id={key} value={t.title} collection={props.title} />
+                                return <List id={key} value={t.title} collection={props.title} done={t.completed}/>
                             })
                         }
                         <div className="flex items-center gap-4 justify-end mt-4 mx-2">

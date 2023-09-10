@@ -1,10 +1,23 @@
 const userModel = require('../Models/userModel')
 
+const createUser = async (req, res) => {
+    let { email } = req.body
+    console.log("createUser", email)
+    let user = await userModel.findOne({ email })
+    if (user) {
+        return res.json({ message: "User exists" })
+    }
+    let newUser = new userModel({ email })
+
+    await newUser.save()
+    res.json({ newUser })
+
+}
 const user_data = async (req, res) => {
-    let email = req.body.email
-    console.log('email', email)
+    let { email } = req.body
+    console.log('email for data', email)
     let userData = await userModel.findOne({ email })
-    res.json({userData})
+    res.json({ userData })
 }
 const newCollection = async (req, res) => {
     let { email, title } = req.body
@@ -33,13 +46,29 @@ const dropCollection = async (req, res) => {
 const deleteTask = async (req, res) => {
     let { email, taskTitle, collection } = req.body
     let user = await userModel.findOne({ email })
-    console.log(user)
     let current_collection = user.collections.filter(e => e.title === collection)
-    console.log(current_collection)
     let newTasks = current_collection[0].tasks.filter(e => e.title !== taskTitle)
-    console.log("newTasks", newTasks)
-    current_collection.tasks = newTasks
+    current_collection[0].tasks = newTasks
     await user.save()
     res.json({ newTasks: current_collection.tasks })
 }
-module.exports = { user_data, newCollection, addTask, dropCollection, deleteTask }
+const markDone = async (req, res) => {
+    let { email, taskTitle, collection } = req.body
+    let user = await userModel.findOne({ email })
+    let current_collection = user.collections.filter(e => e.title === collection)
+    let currentTask = current_collection[0].tasks.filter(e => e.title === taskTitle)
+    let completed = currentTask[0].completed
+    currentTask[0].completed = !completed
+    await user.save()
+    res.json({ "completed": currentTask[0].completed })
+}
+const editTask = async (req, res) => {
+    let { email, taskTitle, collection,newTask } = req.body
+    let user = await userModel.findOne({ email })
+    let current_collection = user.collections.filter(e => e.title === collection)
+    let currentTask = current_collection[0].tasks.filter(e => e.title === taskTitle)
+    currentTask[0].title = newTask
+    await user.save()
+    res.json({ "completed": currentTask[0].completed })
+}
+module.exports = { createUser, user_data, newCollection, addTask, dropCollection, deleteTask, markDone,editTask }
