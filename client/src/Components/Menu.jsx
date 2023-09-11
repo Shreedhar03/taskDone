@@ -23,7 +23,7 @@ const Menu = () => {
   const navigate = useNavigate()
   const { openRight, closeDrawerRight, handleOpenDialog, notify, email, signOutWithGoogle } = useContext(AppContext)
   const logout = async () => {
-    // let {data} = await axios.post(`http://localhost:5000/api/logout`)
+    // let {data} = await axios.post(`https://satin-gleaming-gateway.glitch.me/api/logout`)
     signOutWithGoogle()
     notify("Logged Out")
     navigate('/')

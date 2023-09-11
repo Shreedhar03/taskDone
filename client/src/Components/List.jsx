@@ -16,7 +16,7 @@ const Lists = (props) => {
     }
     const handleDelete = async () => {
         console.log("delete item")
-        let { data } = await axios.post(`http://localhost:5000/api/deleteTask`, {
+        let { data } = await axios.post(`https://satin-gleaming-gateway.glitch.me/api/deleteTask`, {
             collection: props.collection, taskTitle: props.value, email: userData.email
         })
         console.log(data)
@@ -29,14 +29,14 @@ const Lists = (props) => {
         return done.completed
     }
     const handleOnChange = async () => {
-        let { data } = await axios.post('http://localhost:5000/api/markDone', {
+        let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/markDone', {
             collection: props.collection, taskTitle: props.value, email: userData.email
         })
         fetchData()
 
     }
     const handleEdit = async () => {
-        let { data } = await axios.post('http://localhost:5000/api/editTask', {
+        let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/editTask', {
             collection: props.collection, taskTitle: props.value, email: userData.email, newTask
         })
         setEditBox(!editBox)

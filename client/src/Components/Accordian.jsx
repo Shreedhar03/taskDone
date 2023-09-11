@@ -34,7 +34,7 @@ const Accordian = (props) => {
         setOpen(open === value ? 0 : value);
     };
     const handleDropCollection = async () => {
-        let { data } = await axios.put(`http://localhost:5000/api/dropCollection`, {
+        let { data } = await axios.put(`https://satin-gleaming-gateway.glitch.me/api/dropCollection`, {
             name: props.title,
             email: userData?.email
         })

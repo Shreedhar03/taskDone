@@ -47,7 +47,7 @@ function App() {
       if (user) {
         userMail = user.email
         try {
-          let { data } = await axios.post('http://localhost:5000/api/dashboard', { email: userMail })
+          let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/dashboard', { email: userMail })
           setUserData(data?.userData)
           console.log("data", data.userData)
         }
@@ -61,7 +61,7 @@ function App() {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         setEmail(result.user.email)
-        let { data } = await axios.post('http://localhost:5000/api/createUser', { email: result.user.email })
+        let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/createUser', { email: result.user.email })
         console.log('------------------------------', data)
         goto('/dashboard')
       })

@@ -31,7 +31,7 @@ const Collection = () => {
     }
     const handleAddTask = async (e) => {
         e.preventDefault()
-        let { data } = await axios.post(`http://localhost:5000/api/addTask`, {
+        let { data } = await axios.post(`https://satin-gleaming-gateway.glitch.me/api/addTask`, {
             collectionName: id, taskTitle: task, email: userData.email
         })
         console.log(data)
