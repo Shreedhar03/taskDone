@@ -33,6 +33,7 @@ export const AppContext = createContext()
 function App() {
   const [email, setEmail] = useState(''); // use localstorage
   const [userData, setUserData] = useState();
+  const [isLoading,setIsLoading]=useState(0)
   const notify = (msg) => toast(msg);
   const goto = useNavigate()
   const [openRight, setOpenRight] = useState(false);
@@ -49,7 +50,8 @@ function App() {
         try {
           let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/dashboard', { email: userMail })
           setUserData(data?.userData)
-          console.log("data", data.userData)
+          console.log("data fetched")
+          setIsLoading(1)
         }
         catch (err) {
           console.log(err)
@@ -57,6 +59,16 @@ function App() {
       }
     })
   }
+  const handleAddTask = async (e,id,task,setTask) => {
+    setIsLoading(0)
+    e.preventDefault()
+    let { data } = await axios.post(`https://satin-gleaming-gateway.glitch.me/api/addTask`, {
+        collectionName: id, taskTitle: task, email: userData.email
+    })
+    console.log("task added")
+    setTask('')
+    fetchData()
+}
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
@@ -99,7 +111,7 @@ function App() {
 
   return (
     <>
-      <AppContext.Provider value={{ checkAuthState, signInWithGoogle, signOutWithGoogle, userData, email, setEmail, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
+      <AppContext.Provider value={{ handleAddTask,isLoading,setIsLoading,checkAuthState, signInWithGoogle, signOutWithGoogle, userData, email, setEmail, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
         <Menu />
         <Dialog />
         <Routes>

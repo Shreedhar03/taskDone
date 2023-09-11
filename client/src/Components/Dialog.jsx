@@ -9,7 +9,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const DialogBox = () => {
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const { handleOpenDialog, openDialog, fetchData, email } = useContext(AppContext)
     const [title, setTitle] = useState('')
     const handleChange = (e) => {
@@ -29,21 +29,19 @@ const DialogBox = () => {
     }
     return (
         <Fragment>
-
             <Dialog open={openDialog} size="xs" handler={handleOpenDialog} className="bg-[var(--bg-secondary)]">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} className="p-6 flex flex-col gap-4 max-w-[400px] mx-auto">
                     <h1 className="text-[var(--text)] pt-6 pb-3 text-xl text-center">New Collection</h1>
-                    <DialogBody>
-                        <div className="max-w-[300px] mx-auto flex justify-center">
-                            <Input type="text" name='title' value={title} onChange={handleChange} required color="white" label="Enter name of your collection" />
+                    <DialogBody className="p-0">
+                        <div>
+                            <Input type="text" name='title' value={title} onChange={handleChange} required color="white" label="Name of the collection" />
                         </div>
                     </DialogBody>
-                    <div className="flex justify-center max-w-[300px] mx-auto pb-6 gap-2">
-                        <button type="button" className="px-3 py-1 w-1/2 border border-[var(--primary)] text-[var(--primary)] rounded-lg" onClick={handleOpenDialog}>
+                    <div className="flex pb-6 w-full gap-3">
+                        <button type="button" className="w-1/2 px-3 py-1 border border-[var(--primary)] text-[var(--primary)] rounded-lg" onClick={handleOpenDialog}>
                             <span>Cancel</span>
                         </button>
-                        <input type="submit" className="px-3 py-1 w-1/2 bg-[var(--primary)] text-black rounded-lg" value={'Confirm'}>
-                            {/* <span>Confirm</span> */}
+                        <input type="submit" className="w-1/2 px-3 py-1 bg-[var(--primary)] text-black rounded-lg" value={'Confirm'}>
                         </input>
                     </div>
                 </form>

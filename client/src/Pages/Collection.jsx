@@ -8,10 +8,11 @@ import { Chart } from '../Components/Chart';
 import { AppContext } from '../App';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import Loader from '../Components/Loader';
 
 const Collection = () => {
     const [task, setTask] = useState('')
-    const { fetchData, userData } = useContext(AppContext)
+    const { fetchData, userData, isLoading,handleAddTask } = useContext(AppContext)
     const [completed, setCompleted] = useState()
     const [pending, setPending] = useState()
     const { id } = useParams()
@@ -29,15 +30,7 @@ const Collection = () => {
     const handleChange = (e) => {
         setTask(e.target.value)
     }
-    const handleAddTask = async (e) => {
-        e.preventDefault()
-        let { data } = await axios.post(`https://satin-gleaming-gateway.glitch.me/api/addTask`, {
-            collectionName: id, taskTitle: task, email: userData.email
-        })
-        console.log(data)
-        setTask('')
-        fetchData()
-    }
+
     return (
         <>
             <Navbar />
@@ -46,7 +39,7 @@ const Collection = () => {
                     <img src={item} alt="menu" className='w-8' />
                     <p className='text-2xl'>{id}</p>
                 </div>
-                <form className='w-72 relative' onSubmit={handleAddTask}>
+                <form className='w-72 relative' onSubmit={(e)=>{handleAddTask(e,id,task,setTask)}}>
                     <Input variant='outlined' value={task} onChange={handleChange} color='white' label='Add task' />
                     <input type="submit" value={"+"} className='absolute top-[2px] right-3 text-3xl font-extralight abel' />
                     <button className='flex items-center gap-2 mt-3 cursor-pointer opacity-40' type='button'>
@@ -54,12 +47,14 @@ const Collection = () => {
                     </button>
                 </form>
             </div>
+
             <div className='flex-col gap-12 md:gap-0 my-24 md:my-0 md:flex-row flex items-start justify-between max-w-5xl mx-2 md:mx-8 lg:mx-24'>
-                <div className='w-[300px] sm:w-[350px] mt-12'>
+                <div className='w-[300px] sm:w-[350px] mt-12 relative'>
                     {
-                        userData?.collections?.filter(e => e.title === id)[0]?.tasks?.map((t, key) => {
-                            return <Lists calcAnalytics={calcAnalytics} id={key} value={t.title} collection={id} done={t.completed} />
-                        })
+                        isLoading ?
+                            userData?.collections?.filter(e => e.title === id)[0]?.tasks?.map((t, key) => {
+                                return <Lists calcAnalytics={calcAnalytics} id={key} value={t.title} collection={id} done={t.completed} />
+                            }) : <Loader />
                     }
                 </div>
 

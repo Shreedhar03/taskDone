@@ -3,10 +3,11 @@ import {
     Accordion,
     AccordionHeader,
     AccordionBody,
+    Input,
 } from "@material-tailwind/react";
 import List from "./List";
 import { useNavigate } from "react-router-dom";
-import { TrashIcon, ArrowsPointingOutIcon } from "@heroicons/react/24/solid";
+import { TrashIcon, ArrowsPointingOutIcon, CalendarDaysIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { AppContext } from "../App";
 
@@ -27,8 +28,9 @@ function Icon({ id, open }) {
 }
 
 const Accordian = (props) => {
-    const { fetchData, userData } = useContext(AppContext)
+    const { fetchData, userData, handleAddTask } = useContext(AppContext)
     const [open, setOpen] = useState(0);
+    const [task, setTask] = useState('')
     const navigate = useNavigate()
     const handleOpen = (value) => {
         setOpen(open === value ? 0 : value);
@@ -49,9 +51,16 @@ const Accordian = (props) => {
                         <p className="font-light">{props.title}</p>
                     </AccordionHeader>
                     <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col pr-6 pl-2">
+                        <form className='w-72 relative my-6 px-2' onSubmit={(e)=>{handleAddTask(e,props.title,task,setTask)}}>
+                            <Input variant='outlined' value={task} onChange={(e) => setTask(e.target.value)} color='white' label='Add task' />
+                            <input type="submit" value={"+"} className='absolute top-[2px] right-5 text-3xl font-extralight abel' />
+                            <button className='flex items-center gap-2 mt-3 cursor-pointer opacity-40' type='button'>
+                                <CalendarDaysIcon className='w-5' /><span className='text-sm'>Set date and time</span>
+                            </button>
+                        </form>
                         {
                             props.tasks?.map((t, key) => {
-                                return <List id={key} value={t.title} collection={props.title} done={t.completed}/>
+                                return <List id={key} value={t.title} collection={props.title} done={t.completed} />
                             })
                         }
                         <div className="flex items-center gap-4 justify-end mt-4 mx-2">
