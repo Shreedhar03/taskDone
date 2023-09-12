@@ -53,7 +53,13 @@ const Collection = () => {
                     {
                         isLoading ?
                             userData?.collections?.filter(e => e.title === id)[0]?.tasks?.map((t, key) => {
-                                return <Lists calcAnalytics={calcAnalytics} id={key} value={t.title} collection={id} done={t.completed} />
+                                return !t.completed && <Lists calcAnalytics={calcAnalytics} id={key} value={t.title} collection={id} done={t.completed} />
+                            }) : <Loader />
+                    }
+                    {
+                        isLoading ?
+                            userData?.collections?.filter(e => e.title === id)[0]?.tasks?.map((t, key) => {
+                                return t.completed && <Lists calcAnalytics={calcAnalytics} id={key} value={t.title} collection={id} done={t.completed} />
                             }) : <Loader />
                     }
                 </div>

@@ -7,7 +7,7 @@ import {
 } from "@material-tailwind/react";
 import List from "./List";
 import { useNavigate } from "react-router-dom";
-import { TrashIcon, ArrowsPointingOutIcon, CalendarDaysIcon } from "@heroicons/react/24/solid";
+import { TrashIcon, ArrowsPointingOutIcon, CalendarDaysIcon, PencilIcon, CheckIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { AppContext } from "../App";
 
@@ -31,6 +31,8 @@ const Accordian = (props) => {
     const { fetchData, userData, handleAddTask } = useContext(AppContext)
     const [open, setOpen] = useState(0);
     const [task, setTask] = useState('')
+    const [collectionName, setCollectionName] = useState(props.title)
+    const [showEdit, setShowEdit] = useState(0)
     const navigate = useNavigate()
     const handleOpen = (value) => {
         setOpen(open === value ? 0 : value);
@@ -43,15 +45,32 @@ const Accordian = (props) => {
         console.log(data)
         fetchData()
     }
+    const handleEdit = (e) => {
+        e.stopPropagation()
+        setShowEdit(1)
+        console.log("edit collection name")
+    }
     return (
         <div className='shrink-0'>
             <Fragment>
                 <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
-                    <AccordionHeader onClick={() => handleOpen(1)} className="text-[var(--text)] hover:text-white text-lg bg-[var(--bg-secondary)] px-6">
-                        <p className="font-light">{props.title}</p>
+                    <AccordionHeader onClick={() => handleOpen(1)} className="group text-[var(--text)] hover:text-white text-lg bg-[var(--bg-secondary)] px-6">
+                        <div className="flex gap-3 items-center">
+                            {showEdit ?
+                                <input type="text" autoFocus={true} value={collectionName} onChange={(e)=>setCollectionName(e.target.value)} className="w-[10ch] bg-inherit outline-none focus:outline-none" onBlur={()=>setShowEdit(0)}/> :
+                                <p className="font-light">{props.title}</p>
+                            }
+                            <div className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={handleEdit}>
+                                {
+                                    showEdit ?
+                                        <CheckIcon className="w-5 h-5 text-blue-gray-100" /> :
+                                        <PencilIcon className="w-4 h-4 text-blue-gray-200" />
+                                }
+                            </div>
+                        </div>
                     </AccordionHeader>
                     <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col pr-6 pl-2">
-                        <form className='w-72 relative my-6 px-2' onSubmit={(e)=>{handleAddTask(e,props.title,task,setTask)}}>
+                        <form className='w-72 relative my-6 px-2' onSubmit={(e) => { handleAddTask(e, props.title, task, setTask) }}>
                             <Input variant='outlined' value={task} onChange={(e) => setTask(e.target.value)} color='white' label='Add task' />
                             <input type="submit" value={"+"} className='absolute top-[2px] right-5 text-3xl font-extralight abel' />
                             <button className='flex items-center gap-2 mt-3 cursor-pointer opacity-40' type='button'>
@@ -60,7 +79,12 @@ const Accordian = (props) => {
                         </form>
                         {
                             props.tasks?.map((t, key) => {
-                                return <List id={key} value={t.title} collection={props.title} done={t.completed} />
+                                return !t.completed && <List id={key} value={t.title} collection={props.title} done={t.completed} />
+                            })
+                        }
+                        {
+                            props.tasks?.map((t, key) => {
+                                return t.completed && <List id={key} value={t.title} collection={props.title} done={t.completed} />
                             })
                         }
                         <div className="flex items-center gap-4 justify-end mt-4 mx-2">
