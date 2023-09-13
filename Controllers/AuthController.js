@@ -43,6 +43,14 @@ const dropCollection = async (req, res) => {
     await user.save()
     res.json({ collection: user.collections })
 }
+const renameCollection = async (req, res) => {
+    let { email, name, newTitle } = req.body
+    let user = await userModel.findOne({ email })
+    let currentCollection = user.collections.filter(e => e.title === name)
+    currentCollection[0].title = newTitle
+    await user.save()
+    res.json({ collection: user.collections })
+}
 const deleteTask = async (req, res) => {
     let { email, taskTitle, collection } = req.body
     let user = await userModel.findOne({ email })
@@ -63,7 +71,7 @@ const markDone = async (req, res) => {
     res.json({ "completed": currentTask[0].completed })
 }
 const editTask = async (req, res) => {
-    let { email, taskTitle, collection,newTask } = req.body
+    let { email, taskTitle, collection, newTask } = req.body
     let user = await userModel.findOne({ email })
     let current_collection = user.collections.filter(e => e.title === collection)
     let currentTask = current_collection[0].tasks.filter(e => e.title === taskTitle)
@@ -71,4 +79,4 @@ const editTask = async (req, res) => {
     await user.save()
     res.json({ "completed": currentTask[0].completed })
 }
-module.exports = { createUser, user_data, newCollection, addTask, dropCollection, deleteTask, markDone,editTask }
+module.exports = { createUser, user_data, newCollection, addTask, dropCollection,renameCollection, deleteTask, markDone, editTask }

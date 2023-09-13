@@ -29,9 +29,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
 export const AppContext = createContext()
-
+const getPic = ()=>{
+  return localStorage.getItem('userPic') || ''
+}
 function App() {
   const [email, setEmail] = useState(''); // use localstorage
+  const [userPic,setUserPic]=useState(getPic())
   const [userData, setUserData] = useState();
   const [isLoading,setIsLoading]=useState(0)
   const notify = (msg) => toast(msg);
@@ -73,6 +76,8 @@ function App() {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         setEmail(result.user.email)
+        localStorage.setItem('userPic',result.user.photoURL)
+        setUserPic(result.user.photoURL)
         let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/createUser', { email: result.user.email })
         console.log('------------------------------', data)
         goto('/dashboard')
@@ -111,7 +116,7 @@ function App() {
 
   return (
     <>
-      <AppContext.Provider value={{ handleAddTask,isLoading,setIsLoading,checkAuthState, signInWithGoogle, signOutWithGoogle, userData, email, setEmail, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
+      <AppContext.Provider value={{ handleAddTask,isLoading,setIsLoading,checkAuthState, signInWithGoogle, signOutWithGoogle, userData, email, setEmail,userPic, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
         <Menu />
         <Dialog />
         <Routes>

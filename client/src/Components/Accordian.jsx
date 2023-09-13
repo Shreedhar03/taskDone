@@ -42,8 +42,23 @@ const Accordian = (props) => {
             name: props.title,
             email: userData?.email
         })
-        console.log(data)
+        // console.log(data)
         fetchData()
+    }
+    const handleBlur=()=>{
+        setTimeout(() => {
+            setShowEdit(0)
+        }, 1000);
+    }
+    const handleRenameCollection = async () => {
+        let { data } = await axios.put(`https://satin-gleaming-gateway.glitch.me/api/renameCollection`, {
+            name: props.title,
+            email: userData?.email,
+            newTitle: collectionName
+        })
+        // console.log(data)
+        fetchData()
+        console.log('rename')
     }
     const handleEdit = (e) => {
         e.stopPropagation()
@@ -57,13 +72,13 @@ const Accordian = (props) => {
                     <AccordionHeader onClick={() => handleOpen(1)} className="group text-[var(--text)] hover:text-white text-lg bg-[var(--bg-secondary)] px-6">
                         <div className="flex gap-3 items-center">
                             {showEdit ?
-                                <input type="text" autoFocus={true} value={collectionName} onChange={(e)=>setCollectionName(e.target.value)} className="w-[10ch] bg-inherit outline-none focus:outline-none" onBlur={()=>setShowEdit(0)}/> :
+                                <input type="text" autoFocus={true} value={collectionName} onChange={(e)=>setCollectionName(e.target.value)} className="w-[10ch] bg-inherit outline-none focus:outline-none" onBlur={handleBlur}/> :
                                 <p className="font-light">{props.title}</p>
                             }
                             <div className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={handleEdit}>
                                 {
                                     showEdit ?
-                                        <CheckIcon className="w-5 h-5 text-blue-gray-100" /> :
+                                        <CheckIcon className="w-5 h-5 text-blue-gray-100" onClick={handleRenameCollection}/> :
                                         <PencilIcon className="w-4 h-4 text-blue-gray-200" />
                                 }
                             </div>

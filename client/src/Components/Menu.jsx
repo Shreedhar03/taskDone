@@ -21,7 +21,7 @@ import axios from "axios";
 
 const Menu = () => {
   const navigate = useNavigate()
-  const { openRight, closeDrawerRight, handleOpenDialog, notify, email, signOutWithGoogle } = useContext(AppContext)
+  const { openRight, closeDrawerRight, handleOpenDialog, notify, email, signOutWithGoogle,userPic } = useContext(AppContext)
   const logout = async () => {
     // let {data} = await axios.post(`https://satin-gleaming-gateway.glitch.me/api/logout`)
     signOutWithGoogle()
@@ -43,7 +43,7 @@ const Menu = () => {
         <List>
           <ListItem className="text-[var(--text)] hover:bg-[var(--bg-secondary)]">
             <ListItemPrefix>
-              <p className='text-xl py-1 px-3 bg-teal-500 text-black rounded-full'>S</p>
+              <img src={userPic} referrerPolicy="no-referrer" className='rounded-full w-6 h-6 object-cover' />
             </ListItemPrefix>
             <p className='text-lg text-[var(--text)] break-all'>{email && email}</p>
           </ListItem>
