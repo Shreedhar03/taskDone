@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../Components/Navbar'
 import Accordian from '../Components/Accordian'
 import collection from '../assets/collection.svg'
-// import { Chart } from '../Components/Chart'
 import { AppContext } from '../App'
 import Loader from '../Components/Loader'
 
@@ -12,10 +11,14 @@ const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const Dashboard = () => {
     const [date, setDate] = useState(new Date())
-    const { userData, checkAuthState, fetchData, handleOpenDialog, isLoading } = useContext(AppContext)
+    const [message, setMessage] = useState('Good Morning')
+    const { userData, checkAuthState, fetchData, handleOpenDialog, isLoading, userName } = useContext(AppContext)
 
     useEffect(() => {
         setDate(new Date())
+        console.log(date.getHours())
+        if (date.getHours() > 11)
+            date.getHours() < 18 ? setMessage('Good Afternoon') : setMessage('Good Evening')
         checkAuthState()
         fetchData()
         console.log("dashboarddddd")
@@ -25,7 +28,12 @@ const Dashboard = () => {
         <>
             <Navbar />
 
-            <div className='flex items-start justify-between py-24 sm:mx-0 mx-3'>
+            <div className="lg:mx-24 mx-3 pt-12">
+                <h1 className='text-2xl text-blue-gray-200'>{message}</h1>
+                <h1 className='text-xl text-blue-gray-200'>{userName}</h1>
+            </div>
+
+            <div className='flex items-start justify-between py-12 sm:mx-0 mx-3'>
                 <section className='max-w-7xl flex flex-col md:flex-row gap-12 md:gap-0 items-center sm:items-start justify-between bg-orange-'>
                     <div className='w-[340px] sm:w-auto sm:mx-4 lg:mx-24 flex flex-col gap-3'>
                         <div className='flex items-center gap-2 mb-4'>
@@ -33,16 +41,16 @@ const Dashboard = () => {
                             <h2 className='text-xl'>Your Collections</h2>
                         </div>
                         {
-                            isLoading ? 
-                            <div className='max-w-full flex flex-wrap gap-8'>
-                                {
-                                    userData?.collections?.map((c, key) => {
-                                        return (
-                                            <Accordian title={c.title} key={key} tasks={c.tasks} />
-                                        )
-                                    })
-                                }
-                            </div> : <Loader />
+                            isLoading ?
+                                <div className='max-w-full flex flex-wrap gap-8'>
+                                    {
+                                        userData?.collections?.map((c, key) => {
+                                            return (
+                                                <Accordian title={c.title} key={key} tasks={c.tasks} />
+                                            )
+                                        })
+                                    }
+                                </div> : <Loader />
                         }
 
                         <div>
@@ -50,13 +58,8 @@ const Dashboard = () => {
                                 userData?.collections?.length === 0 && <p className='text-xl mt-4 ml-2'>No collections</p>
                             }
                         </div>
-
-                        {/* <Accordian title="Fitness-2023" />
-                    <Accordian title="Travel" /> */}
                     </div>
-                    {/* <div className='w-[300px] mx-10'>
-                    <Chart />
-                </div> */}
+
                 </section>
 
 

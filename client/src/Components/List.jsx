@@ -53,7 +53,7 @@ const Lists = (props) => {
                     :
                     <div className="flex items-center">
                         <Checkbox id={props.id} checked={checkDone() ? true : false} onChange={handleOnChange} />
-                        <label htmlFor={props.id} className={`text-xl text-[var(--text)] w-[250px] ${checkDone() && 'text-gray-500 line-through'}`}>{props.value}</label>
+                        <label htmlFor={props.id} className={`sm:text-xl text-[var(--text)] max-w-[180px] ${checkDone() && 'text-gray-500 line-through'}`}>{props.value}</label>
                     </div>
 
             }

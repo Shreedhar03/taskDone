@@ -84,7 +84,7 @@ const Accordian = (props) => {
                             </div>
                         </div>
                     </AccordionHeader>
-                    <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col pr-6 pl-2">
+                    <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col pr-3 pl-2">
                         <form className='w-72 relative my-6 px-2' onSubmit={(e) => { handleAddTask(e, props.title, task, setTask) }}>
                             <Input variant='outlined' value={task} onChange={(e) => setTask(e.target.value)} color='white' label='Add task' />
                             <input type="submit" value={"+"} className='absolute top-[2px] right-5 text-3xl font-extralight abel' />
