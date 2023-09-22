@@ -55,7 +55,7 @@ function App() {
       if (user) {
         userMail = user.email
         try {
-          let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/dashboard', { email: userMail })
+          let { data } = await axios.post('https://taskdone.glitch.me/api/dashboard', { email: userMail })
           setUserData(data?.userData)
           console.log("data fetched")
           setIsLoading(1)
@@ -69,7 +69,7 @@ function App() {
   const handleAddTask = async (e,id,task,setTask) => {
     setIsLoading(0)
     e.preventDefault()
-    let { data } = await axios.post(`https://satin-gleaming-gateway.glitch.me/api/addTask`, {
+    let { data } = await axios.post(`https://taskdone.glitch.me/api/addTask`, {
         collectionName: id, taskTitle: task, email: userData.email
     })
     console.log("task added")
@@ -84,7 +84,7 @@ function App() {
         localStorage.setItem('userName',result.user.displayName)
         setUserName(result.user.displayName)
         setUserPic(result.user.photoURL)
-        let { data } = await axios.post('https://satin-gleaming-gateway.glitch.me/api/createUser', { email: result.user.email })
+        let { data } = await axios.post('https://taskdone.glitch.me/api/createUser', { email: result.user.email })
         console.log('------------------------------', data)
         goto('/dashboard')
       })

@@ -22,7 +22,7 @@ const Register = () => {
             return
         }
         try {
-            let { data } = await axios.post("https://satin-gleaming-gateway.glitch.me/api/signup", credentials)
+            let { data } = await axios.post("https://taskdone.glitch.me/api/signup", credentials)
             if (data.success) {
                 console.log("Registered : " , data)
                 notify(data.message)

@@ -20,7 +20,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            let { data } = await axios.post("https://satin-gleaming-gateway.glitch.me/api/login", credentials)
+            let { data } = await axios.post("https://taskdone.glitch.me/api/login", credentials)
             if (data.success) {
                 console.log(data)
                 fetchData()

@@ -38,7 +38,7 @@ const Accordian = (props) => {
         setOpen(open === value ? 0 : value);
     };
     const handleDropCollection = async () => {
-        let { data } = await axios.put(`https://satin-gleaming-gateway.glitch.me/api/dropCollection`, {
+        let { data } = await axios.put(`https://taskdone.glitch.me/api/dropCollection`, {
             name: props.title,
             email: userData?.email
         })
@@ -51,7 +51,7 @@ const Accordian = (props) => {
         }, 1000);
     }
     const handleRenameCollection = async () => {
-        let { data } = await axios.put(`https://satin-gleaming-gateway.glitch.me/api/renameCollection`, {
+        let { data } = await axios.put(`https://taskdone.glitch.me/api/renameCollection`, {
             name: props.title,
             email: userData?.email,
             newTitle: collectionName
