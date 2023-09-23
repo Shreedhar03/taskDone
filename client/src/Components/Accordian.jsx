@@ -66,7 +66,7 @@ const Accordian = (props) => {
         console.log("edit collection name")
     }
     return (
-        <div className='shrink-0'>
+        <div className='shrink-0' key={props.key}>
             <Fragment>
                 <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
                     <AccordionHeader onClick={() => handleOpen(1)} className="group text-[var(--text)] hover:text-white text-lg bg-[var(--bg-secondary)] px-6">
