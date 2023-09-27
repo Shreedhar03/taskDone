@@ -14,25 +14,25 @@ export default defineConfig({
         description:"Todo application to manage your daily tasks efficiently.",
         icons:[
           {
-            "src": "public/icons/manifest-icon-192.maskable.png",
+            "src": "icons/manifest-icon-192.maskable.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
           },
           {
-            "src": "public/icons/manifest-icon-192.maskable.png",
+            "src": "icons/manifest-icon-192.maskable.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "maskable"
           },
           {
-            "src": "public/icons/manifest-icon-512.maskable.png",
+            "src": "icons/manifest-icon-512.maskable.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any"
           },
           {
-            "src": "public/icons/manifest-icon-512.maskable.png",
+            "src": "icons/manifest-icon-512.maskable.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "maskable"

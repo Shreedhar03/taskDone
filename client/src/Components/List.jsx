@@ -5,6 +5,7 @@ import cross from '../assets/cross.svg'
 import correct from '../assets/correct.svg'
 import axios from "axios";
 import { AppContext } from "../App";
+import Cookies from "js-cookie";
 
 const Lists = (props) => {
     const { fetchData, userData } = useContext(AppContext)
@@ -17,7 +18,7 @@ const Lists = (props) => {
     const handleDelete = async () => {
         console.log("delete item")
         let { data } = await axios.post(`https://taskdone.glitch.me/api/deleteTask`, {
-            collection: props.collection, taskTitle: props.value, email: userData.email
+            collection: props.collection, taskTitle: props.value, email: userData.email,token: Cookies.get('token')
         })
         console.log(data)
         fetchData()
@@ -30,14 +31,14 @@ const Lists = (props) => {
     }
     const handleOnChange = async () => {
         let { data } = await axios.post('https://taskdone.glitch.me/api/markDone', {
-            collection: props.collection, taskTitle: props.value, email: userData.email
+            collection: props.collection, taskTitle: props.value, email: userData.email,token: Cookies.get('token')
         })
         fetchData()
 
     }
     const handleEdit = async () => {
         let { data } = await axios.post('https://taskdone.glitch.me/api/editTask', {
-            collection: props.collection, taskTitle: props.value, email: userData.email, newTask
+            collection: props.collection, taskTitle: props.value, email: userData.email, newTask,token: Cookies.get('token')
         })
         setEditBox(!editBox)
         fetchData()

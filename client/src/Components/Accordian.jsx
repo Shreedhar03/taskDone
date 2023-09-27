@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { TrashIcon, ArrowsPointingOutIcon, CalendarDaysIcon, PencilIcon, CheckIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { AppContext } from "../App";
+import Cookies from "js-cookie";
 
 function Icon({ id, open }) {
     return (
@@ -40,7 +41,8 @@ const Accordian = (props) => {
     const handleDropCollection = async () => {
         let { data } = await axios.put(`https://taskdone.glitch.me/api/dropCollection`, {
             name: props.title,
-            email: userData?.email
+            email: userData?.email,
+            token: Cookies.get('token')
         })
         // console.log(data)
         fetchData()
@@ -54,7 +56,8 @@ const Accordian = (props) => {
         let { data } = await axios.put(`https://taskdone.glitch.me/api/renameCollection`, {
             name: props.title,
             email: userData?.email,
-            newTitle: collectionName
+            newTitle: collectionName,
+            token: Cookies.get('token')
         })
         // console.log(data)
         fetchData()

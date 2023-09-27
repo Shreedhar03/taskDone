@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios'
 import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, setPersistence, browserLocalPersistence } from 'firebase/auth'
+import Cookies from 'js-cookie'
 
 import { initializeApp } from "firebase/app";
 
@@ -29,18 +30,18 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
 export const AppContext = createContext()
-const getPic = ()=>{
+const getPic = () => {
   return localStorage.getItem('userPic') || ''
 }
-const getName = ()=>{
+const getName = () => {
   return localStorage.getItem('userName') || ''
 }
 function App() {
   const [email, setEmail] = useState(''); // use localstorage
-  const [userPic,setUserPic]=useState(getPic())
-  const [userName,setUserName]=useState(getName())
+  const [userPic, setUserPic] = useState(getPic())
+  const [userName, setUserName] = useState(getName())
   const [userData, setUserData] = useState();
-  const [isLoading,setIsLoading]=useState(0)
+  const [isLoading, setIsLoading] = useState(0)
   const notify = (msg) => toast(msg);
   const goto = useNavigate()
   const [openRight, setOpenRight] = useState(false);
@@ -51,11 +52,12 @@ function App() {
 
   const fetchData = () => {
     let userMail;
+
     onAuthStateChanged(auth, async user => {
       if (user) {
         userMail = user.email
         try {
-          let { data } = await axios.post('https://taskdone.glitch.me/api/dashboard', { email: userMail })
+          let { data } = await axios.post('https://taskdone.glitch.me/api/dashboard', { email: userMail, token: Cookies.get('token') })
           setUserData(data?.userData)
           console.log("data fetched")
           setIsLoading(1)
@@ -66,22 +68,23 @@ function App() {
       }
     })
   }
-  const handleAddTask = async (e,id,task,setTask) => {
+  const handleAddTask = async (e, id, task, setTask) => {
     setIsLoading(0)
     e.preventDefault()
     let { data } = await axios.post(`https://taskdone.glitch.me/api/addTask`, {
-        collectionName: id, taskTitle: task, email: userData.email
+      collectionName: id, taskTitle: task, email: userData.email, token: Cookies.get('token')
     })
     console.log("task added")
     setTask('')
     fetchData()
-}
+  }
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         setEmail(result.user.email)
-        localStorage.setItem('userPic',result.user.photoURL)
-        localStorage.setItem('userName',result.user.displayName)
+        Cookies.set('token', (await result.user.getIdToken()).toString(), { expires: 14 })
+        localStorage.setItem('userPic', result.user.photoURL)
+        localStorage.setItem('userName', result.user.displayName)
         setUserName(result.user.displayName)
         setUserPic(result.user.photoURL)
         let { data } = await axios.post('https://taskdone.glitch.me/api/createUser', { email: result.user.email })
@@ -122,7 +125,7 @@ function App() {
 
   return (
     <>
-      <AppContext.Provider value={{ handleAddTask,isLoading,setIsLoading,checkAuthState, signInWithGoogle, signOutWithGoogle, userData, email, setEmail,userPic,userName, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
+      <AppContext.Provider value={{ handleAddTask, isLoading, setIsLoading, checkAuthState, signInWithGoogle, signOutWithGoogle, userData, email, setEmail, userPic, userName, fetchData, notify, openRight, setOpenRight, openDrawerRight, closeDrawerRight, openDialog, setOpenDialog, handleOpenDialog }}>
         <Menu />
         <Dialog />
         <Routes>

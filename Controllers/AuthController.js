@@ -14,20 +14,24 @@ const createUser = async (req, res) => {
 
 }
 const user_data = async (req, res) => {
-    let { email } = req.body
-    console.log('email for data', email)
+    // let { email } = req.email
+    console.log("fetching user data")
+    let email = req.email
+    console.log('email for data', req.email)
     let userData = await userModel.findOne({ email })
     res.json({ userData })
 }
 const newCollection = async (req, res) => {
-    let { email, title } = req.body
+    let { title } = req.body
+    let email = req.email
     let user = await userModel.findOne({ email })
     user.collections.push({ title, tasks: [] })
     await user.save()
     res.json({ user })
 }
 const addTask = async (req, res) => {
-    let { email, collectionName, taskTitle } = req.body
+    let { collectionName, taskTitle } = req.body
+    let email = req.email
     let user = await userModel.findOne({ email })
     let collection = user.collections.find(c => c.title === collectionName)
     collection.tasks.push({ title: taskTitle })
@@ -36,7 +40,8 @@ const addTask = async (req, res) => {
     res.json({ collection, user })
 }
 const dropCollection = async (req, res) => {
-    let { email, name } = req.body
+    let { name } = req.body
+    let email = req.email
     let user = await userModel.findOne({ email })
     let newCollection = user.collections.filter(e => e.title !== name)
     user.collections = newCollection
@@ -44,7 +49,8 @@ const dropCollection = async (req, res) => {
     res.json({ collection: user.collections })
 }
 const renameCollection = async (req, res) => {
-    let { email, name, newTitle } = req.body
+    let { name, newTitle } = req.body
+    let email = req.email
     let user = await userModel.findOne({ email })
     let currentCollection = user.collections.filter(e => e.title === name)
     currentCollection[0].title = newTitle
@@ -52,7 +58,8 @@ const renameCollection = async (req, res) => {
     res.json({ collection: user.collections })
 }
 const deleteTask = async (req, res) => {
-    let { email, taskTitle, collection } = req.body
+    let { taskTitle, collection } = req.body
+    let email = req.email
     let user = await userModel.findOne({ email })
     let current_collection = user.collections.filter(e => e.title === collection)
     let newTasks = current_collection[0].tasks.filter(e => e.title !== taskTitle)
@@ -61,7 +68,8 @@ const deleteTask = async (req, res) => {
     res.json({ newTasks: current_collection.tasks })
 }
 const markDone = async (req, res) => {
-    let { email, taskTitle, collection } = req.body
+    let { taskTitle, collection } = req.body
+    let email = req.email
     let user = await userModel.findOne({ email })
     let current_collection = user.collections.filter(e => e.title === collection)
     let currentTask = current_collection[0].tasks.filter(e => e.title === taskTitle)
@@ -71,7 +79,8 @@ const markDone = async (req, res) => {
     res.json({ "completed": currentTask[0].completed })
 }
 const editTask = async (req, res) => {
-    let { email, taskTitle, collection, newTask } = req.body
+    let { taskTitle, collection, newTask } = req.body
+    let email = req.email
     let user = await userModel.findOne({ email })
     let current_collection = user.collections.filter(e => e.title === collection)
     let currentTask = current_collection[0].tasks.filter(e => e.title === taskTitle)

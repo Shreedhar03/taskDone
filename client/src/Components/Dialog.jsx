@@ -7,6 +7,7 @@ import {
 import { AppContext } from "../App";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 
 const DialogBox = () => {
     const navigate = useNavigate()
@@ -20,7 +21,7 @@ const DialogBox = () => {
         e.preventDefault()
         console.log("email", email)
         let { data } = await axios.post(`https://taskdone.glitch.me/api/newCollection`, {
-            title, email
+            title, email,token: Cookies.get('token')
         })
         // console.log(data)
         fetchData()
