@@ -82,7 +82,7 @@ function App() {
     signInWithPopup(auth, provider)
       .then(async (result) => {
         setEmail(result.user.email)
-        Cookies.set('token', (await result.user.getIdToken()).toString(), { expires: 14 })
+        Cookies.set('token', (await result.user.getIdToken()).toString(), { expires: 14, secure: true })
         localStorage.setItem('userPic', result.user.photoURL)
         localStorage.setItem('userName', result.user.displayName)
         setUserName(result.user.displayName)
@@ -101,6 +101,7 @@ function App() {
       })
   }
   const signOutWithGoogle = () => {
+    Cookies.remove('token')
     signOut(auth)
       .then(() => {
         console.log('Sign-out successful!')
