@@ -3,21 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
-
 :root {
     --bg-primary: #181717;
     --bg-secondary: #212123;
     --primary: #FFCB74;
     --text: #fff;
 }
-
-/* body.dark {
-    --bg-primary: #f8f8f8!important;
-    --bg-secondary: #e1e1e7!important;
-    --primary: #ea9502!important;
-    --text: #000000!important;
-} */
-
 * {
     font-family: 'Poppins';
 }
@@ -33,11 +24,4 @@
 body {
     background-color: var(--bg-primary);
     color: var(--text);
-}
-
-body.dark {
-    --bg-primary: #181717;
-    --bg-secondary: #212123;
-    --primary: #FFCB74;
-    --text: #fff;
 }

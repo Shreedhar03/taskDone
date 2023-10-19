@@ -42,7 +42,7 @@ const DialogBox = () => {
                         <button type="button" className="w-1/2 px-3 py-1 border border-[var(--primary)] text-[var(--primary)] rounded-lg" onClick={handleOpenDialog}>
                             <span>Cancel</span>
                         </button>
-                        <input type="submit" className="w-1/2 px-3 py-1 bg-[var(--primary)] text-black rounded-lg" value={'Confirm'}>
+                        <input type="submit" className="w-1/2 px-3 py-1 bg-[var(--primary)]  text-black rounded-lg" value={'Confirm'}>
                         </input>
                     </div>
                 </form>

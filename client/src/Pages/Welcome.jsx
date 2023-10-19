@@ -26,7 +26,7 @@ const Welcome = () => {
                         <p className='text-xl'>Unlock your full potential with our sleek and efficient todo web application.</p>
                         <div className='flex flex-col md:flex-row gap-3'>
                             {/* <button className='border border-[var(--primary)] rounded-lg text-[var(--primary)] px-4 py-2' onClick={() => navigate('/register')}>Sign up</button> */}
-                            {/* <button className='bg-[var(--primary)] text-black rounded-lg px-4 py-2' onClick={() => navigate('/login')}>Login</button> */}
+                            {/* <button className='bg-[var(--primary)]  text-black rounded-lg px-4 py-2' onClick={() => navigate('/login')}>Login</button> */}
                             <button className='flex self-start gap-2 bg-blue-gray-900 px-6 py-3 rounded-xl'
                                 onClick={signInWithGoogle}>
                                 <img src={google} alt={'google'} />

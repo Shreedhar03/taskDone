@@ -6,13 +6,13 @@ import { CalendarDaysIcon } from "@heroicons/react/24/solid";
 import Lists from '../Components/List';
 import { Chart } from '../Components/Chart';
 import { AppContext } from '../App';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import { Link, useParams } from 'react-router-dom';
+import back from '../assets/arrow.svg'
 import Loader from '../Components/Loader';
 
 const Collection = () => {
     const [task, setTask] = useState('')
-    const { fetchData, userData, isLoading,handleAddTask } = useContext(AppContext)
+    const { fetchData, userData, isLoading, handleAddTask } = useContext(AppContext)
     const [completed, setCompleted] = useState()
     const [pending, setPending] = useState()
     const { id } = useParams()
@@ -35,11 +35,14 @@ const Collection = () => {
         <>
             <Navbar />
             <div className='flex flex-col gap-12 items-center sm:items-start sm:mx-2 md:mx-8 lg:mx-24 mt-14'>
+                <Link to={'/dashboard'}>
+                    <img src={back}/>
+                </Link>
                 <div className='flex items-center gap-2'>
                     <img src={item} alt="menu" className='w-8' />
                     <p className='text-2xl'>{id}</p>
                 </div>
-                <form className='w-72 relative' onSubmit={(e)=>{handleAddTask(e,id,task,setTask)}}>
+                <form className='w-72 relative' onSubmit={(e) => { handleAddTask(e, id, task, setTask) }}>
                     <Input variant='outlined' value={task} onChange={handleChange} color='white' label='Add task' />
                     <input type="submit" value={"+"} className='absolute top-[2px] right-3 text-3xl font-extralight abel' />
                     <button className='flex items-center gap-2 mt-3 cursor-pointer opacity-40' type='button'>

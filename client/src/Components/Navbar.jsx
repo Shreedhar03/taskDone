@@ -33,7 +33,7 @@ const Navbar = () => {
                 <p className='text-[var(--primary)] text-2xl abel cursor-pointer' onClick={() => navigate('/dashboard')}>taskDone</p>
             </div>
             <div className='flex gap-6 items-center'>
-                <button className='text-2xl bg-[var(--primary)] text-black px-2 rounded-lg hidden md:block' onClick={handleOpenDialog}>+</button>
+                <button className='text-2xl bg-[var(--primary)]  text-black px-2 rounded-lg hidden md:block' onClick={handleOpenDialog}>+</button>
                 <div className='relative'>
                     <input type="text" placeholder='Search for collections' value={searchValue} onChange={handleChange} onBlur={handleBlur} className='bg-[var(--bg-primary)] px-3 py-2 focus:outline-none rounded-lg hidden md:block' />
                     <div className={`w-full p-4 bg-[var(--bg-secondary)] absolute ${searchValue.length<3 && 'hidden'} ${searchTask.length===0 && 'hidden'}`}>

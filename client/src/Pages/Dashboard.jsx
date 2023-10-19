@@ -72,7 +72,7 @@ const Dashboard = () => {
                     </div>
                 </section>
 
-                <button className='text-3xl md:hidden fixed bottom-7 right-7 bg-[var(--primary)] text-black px-2 rounded-xl' onClick={handleOpenDialog}>+</button>
+                <button className='text-3xl md:hidden fixed bottom-7 right-7 bg-[var(--primary)]  text-black px-2 rounded-xl' onClick={handleOpenDialog}>+</button>
 
             </div>
         </>
