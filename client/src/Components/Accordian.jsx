@@ -11,6 +11,7 @@ import { TrashIcon, ArrowsPointingOutIcon, CalendarDaysIcon, PencilIcon, CheckIc
 import axios from "axios";
 import { AppContext } from "../App";
 import Cookies from "js-cookie";
+import reorder from '../assets/reorder.svg'
 
 function Icon({ id, open }) {
     return (
@@ -74,10 +75,15 @@ const Accordian = (props) => {
                 <Accordion open={open === 1} icon={<Icon id={1} open={open} />}>
                     <AccordionHeader onClick={() => handleOpen(1)} className="group text-[var(--text)] hover:text-white text-lg bg-[var(--bg-secondary)] px-6">
                         <div className="flex gap-3 items-center">
+
+                            <button className="cursor-move">
+                                <img src={reorder} alt="reorder" className="w-4 h-4" />
+                            </button>
                             {showEdit ?
                                 <input type="text" autoFocus={true} value={collectionName} onChange={(e)=>setCollectionName(e.target.value)} className="w-[10ch] bg-inherit outline-none focus:outline-none" onBlur={handleBlur}/> :
                                 <p className="font-light">{props.title}</p>
                             }
+
                             <div className="opacity-0 group-hover:opacity-100 transition-opacity" onClick={handleEdit}>
                                 {
                                     showEdit ?
@@ -85,6 +91,7 @@ const Accordian = (props) => {
                                         <PencilIcon className="w-4 h-4 text-blue-gray-200" />
                                 }
                             </div>
+
                         </div>
                     </AccordionHeader>
                     <AccordionBody className="bg-[var(--bg-secondary)] flex flex-col pr-3 pl-2">

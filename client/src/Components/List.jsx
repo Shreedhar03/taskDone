@@ -25,7 +25,7 @@ const Lists = (props) => {
     }
     const checkDone = () => {
         // fetchData()
-        let done = userData?.collections?.filter(e => e.title === props.collection)[0].tasks.filter(e => e.title === props.value)[0]
+        let done = userData?.collections?.filter(e => e.title === props.collection)[0]?.tasks?.filter(e => e.title === props.value)[0]
         // console.log("done=", done)
         return done.completed
     }

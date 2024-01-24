@@ -65,7 +65,7 @@ const DialogBox = () => {
                     height="24"
                     width="24"
                     preserveAspectRatio="xMidYMid meet"
-                    class="text-inherit"
+                    className="text-inherit"
                     version="1.1"
                     x="0px"
                     y="0px"
@@ -89,7 +89,7 @@ const DialogBox = () => {
                 />
               </div>
               <div
-                className={`${emojiPickerOpen ? "hidden" : "block"}`}
+                className={`${emojiPickerOpen ? "block" : "hidden"}`}
                 aria-hidden={!emojiPickerOpen}
               >
                 <Picker data={data} onEmojiSelect={handelEmojiSelect} />

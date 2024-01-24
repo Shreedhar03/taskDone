@@ -4,6 +4,7 @@ import Accordian from '../Components/Accordian'
 import collection from '../assets/collection.svg'
 import { AppContext } from '../App'
 import Loader from '../Components/Loader'
+import { Draggable } from 'react-drag-reorder'
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const weekdays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -43,13 +44,16 @@ const Dashboard = () => {
                         {
                             isLoading ?
                                 <div className='max-w-full flex flex-wrap gap-8'>
-                                    {
-                                        userData?.collections?.map((c, key) => {
-                                            return (
-                                                <Accordian title={c.title} key={key} tasks={c.tasks} />
-                                            )
-                                        })
-                                    }
+                                    <Draggable>
+                                        {/*  collection list */}
+                                        {
+                                            userData?.collections?.map((c, key) => {
+                                                return (
+                                                    <Accordian title={c.title} key={key} tasks={c.tasks} />
+                                                )
+                                            })
+                                        }
+                                    </Draggable>
                                 </div> : <Loader />
                         }
 
